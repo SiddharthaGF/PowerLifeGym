@@ -1,7 +1,7 @@
 package com.jpgl.powerlifegym.services;
 
-import com.jpgl.powerlifegym.models.User;
-import com.jpgl.powerlifegym.repositories.UserRepository;
+import com.jpgl.powerlifegym.models.Email;
+import com.jpgl.powerlifegym.repositories.EmailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,24 +9,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class EmailService {
 
     @Autowired
-    UserRepository repository;
+    EmailRepository repository;
 
-    public List<User> All(){
-        return (List<User>) repository.findAll();
+    public List<Email> All(){
+        return (List<Email>) repository.findAll();
     }
 
-    public Optional<User> Find(int id) {
+    public Optional<Email> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(User model) {
+    public boolean Update(Email model) {
         return Add(model);
     }
 
-    public boolean Add(User model) {
+    public boolean Add(Email model) {
         try {
             repository.save(model);
             return true;
@@ -35,7 +35,7 @@ public class UserService {
         }
     }
 
-    public boolean Delete(User model) {
+    public boolean Delete(Email model) {
         try {
             repository.delete(model);
             return true;

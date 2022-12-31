@@ -1,6 +1,7 @@
 package com.jpgl.powerlifegym.controllers;
 
 import com.jpgl.powerlifegym.models.CellphoneNumber;
+import com.jpgl.powerlifegym.models.Client;
 import com.jpgl.powerlifegym.services.CellphoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +31,9 @@ public class CellphoneNumberController {
         return service.Add(cellphoneNumber);
     }
 
+    @DeleteMapping("/cellphoneNumber/{cellphoneNumber}")
+    public boolean destroy(@PathVariable CellphoneNumber cellphoneNumber) {
+        return service.Delete(cellphoneNumber);
+    }
 
 }

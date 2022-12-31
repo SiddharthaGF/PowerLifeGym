@@ -25,10 +25,14 @@ public class UserController {
         return service.Find(id);
     }
 
-    @PutMapping("/user/{user}")
-    public boolean create(@PathVariable User user) {
-        return service.Add(user);
+    @PutMapping("/user/{model}")
+    public boolean create(@PathVariable User model) {
+        return service.Add(model);
     }
 
+    @DeleteMapping("/user/{model}")
+    public boolean destroy(@PathVariable User model) {
+        return service.Delete(model);
+    }
 
 }

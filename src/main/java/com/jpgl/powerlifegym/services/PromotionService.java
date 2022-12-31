@@ -1,7 +1,7 @@
 package com.jpgl.powerlifegym.services;
 
-import com.jpgl.powerlifegym.models.User;
-import com.jpgl.powerlifegym.repositories.UserRepository;
+import com.jpgl.powerlifegym.models.Promotion;
+import com.jpgl.powerlifegym.repositories.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,24 +9,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class PromotionService {
 
     @Autowired
-    UserRepository repository;
+    PromotionRepository repository;
 
-    public List<User> All(){
-        return (List<User>) repository.findAll();
+    public List<Promotion> All(){
+        return (List<Promotion>) repository.findAll();
     }
 
-    public Optional<User> Find(int id) {
+    public Optional<Promotion> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(User model) {
+    public boolean Update(Promotion model) {
         return Add(model);
     }
 
-    public boolean Add(User model) {
+    public boolean Add(Promotion model) {
         try {
             repository.save(model);
             return true;
@@ -35,7 +35,7 @@ public class UserService {
         }
     }
 
-    public boolean Delete(User model) {
+    public boolean Delete(Promotion model) {
         try {
             repository.delete(model);
             return true;

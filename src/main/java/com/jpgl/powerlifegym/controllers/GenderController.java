@@ -32,5 +32,9 @@ public class GenderController {
         return service.Add(gender);
     }
 
+    @DeleteMapping("/gender/{gender}")
+    public boolean destroy(@PathVariable Gender gender) {
+        return service.Delete(gender);
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.jpgl.powerlifegym.controllers;
 
 import com.jpgl.powerlifegym.models.Client;
+import com.jpgl.powerlifegym.models.Gender;
 import com.jpgl.powerlifegym.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +31,9 @@ public class ClientController {
         return service.Add(client);
     }
 
+    @DeleteMapping("/client/{client}")
+    public boolean destroy(@PathVariable Client client) {
+        return service.Delete(client);
+    }
 
 }
