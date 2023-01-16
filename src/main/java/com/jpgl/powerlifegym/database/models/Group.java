@@ -1,13 +1,12 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
-@Table(name = "`groups`")
+@Table(name = "groups", schema = "powerlifegymdb", catalog = "")
 public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -15,7 +14,7 @@ public class Group {
     private int id;
     @Basic
     @Column(name = "id_instructor")
-    private Integer idInstructor;
+    private int idInstructor;
     @Basic
     @Column(name = "name")
     private String name;
@@ -25,11 +24,9 @@ public class Group {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_instructor", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_instructor", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Instructor instructorsByIdInstructor;
-    @JsonIgnore
     @OneToMany(mappedBy = "groupsByIdGroup")
     private Collection<Inscription> inscriptionsById;
 
@@ -41,11 +38,11 @@ public class Group {
         this.id = id;
     }
 
-    public Integer getIdInstructor() {
+    public int getIdInstructor() {
         return idInstructor;
     }
 
-    public void setIdInstructor(Integer idInstructor) {
+    public void setIdInstructor(int idInstructor) {
         this.idInstructor = idInstructor;
     }
 
@@ -76,14 +73,27 @@ public class Group {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
-        Group that = (Group) o;
-        return id == that.id && Objects.equals (idInstructor, that.idInstructor) && Objects.equals (name, that.name) && Objects.equals (createdAt, that.createdAt) && Objects.equals (updatedAt, that.updatedAt);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Group group = (Group) o;
+
+        if (id != group.id) return false;
+        if (idInstructor != group.idInstructor) return false;
+        if (name != null ? !name.equals(group.name) : group.name != null) return false;
+        if (createdAt != null ? !createdAt.equals(group.createdAt) : group.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(group.updatedAt) : group.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id, idInstructor, name, createdAt, updatedAt);
+        int result = id;
+        result = 31 * result + idInstructor;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Instructor getInstructorsByIdInstructor() {

@@ -1,13 +1,13 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
-@Table(name = "subscriptions")
+@Table(name = "subscriptions", schema = "powerlifegymdb", catalog = "")
 public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -17,6 +17,9 @@ public class Subscription {
     @Column(name = "name")
     private String name;
     @Basic
+    @Column(name = "price")
+    private BigDecimal price;
+    @Basic
     @Column(name = "description")
     private String description;
     @Basic
@@ -25,10 +28,12 @@ public class Subscription {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @JsonIgnore
-
     @OneToMany(mappedBy = "subscriptionsByIdSubscription")
     private Collection<Inscription> inscriptionsById;
+    @OneToMany(mappedBy = "subscriptionsByIdSubscription")
+    private Collection<SubscriptionPayment> subscriptionPaymentsById;
+    @OneToMany(mappedBy = "subscriptionsByIdSubscription")
+    private Collection<SubscriptionPromotion> subscriptionPromotionsById;
 
     public int getId() {
         return id;
@@ -44,6 +49,14 @@ public class Subscription {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getDescription() {
@@ -73,14 +86,29 @@ public class Subscription {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         Subscription that = (Subscription) o;
-        return id == that.id && Objects.equals (name, that.name) && Objects.equals (description, that.description) && Objects.equals (createdAt, that.createdAt) && Objects.equals (updatedAt, that.updatedAt);
+
+        if (id != that.id) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (price != null ? !price.equals(that.price) : that.price != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id, name, description, createdAt, updatedAt);
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Collection<Inscription> getInscriptionsById() {
@@ -89,5 +117,21 @@ public class Subscription {
 
     public void setInscriptionsById(Collection<Inscription> inscriptionsById) {
         this.inscriptionsById = inscriptionsById;
+    }
+
+    public Collection<SubscriptionPayment> getSubscriptionPaymentsById() {
+        return subscriptionPaymentsById;
+    }
+
+    public void setSubscriptionPaymentsById(Collection<SubscriptionPayment> subscriptionPaymentsById) {
+        this.subscriptionPaymentsById = subscriptionPaymentsById;
+    }
+
+    public Collection<SubscriptionPromotion> getSubscriptionPromotionsById() {
+        return subscriptionPromotionsById;
+    }
+
+    public void setSubscriptionPromotionsById(Collection<SubscriptionPromotion> subscriptionPromotionsById) {
+        this.subscriptionPromotionsById = subscriptionPromotionsById;
     }
 }

@@ -1,11 +1,10 @@
-package com.jpgl.powerlifegym.logic.test;
+package com.jpgl.powerlifegym;
 
-import com.jpgl.powerlifegym.logic.service.ConfigService;
 import com.jpgl.powerlifegym.logic.validation.PersonValidator;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class TestPerson {
+public class PersonTest {
 
     @Test
     public void testPersonDni(){
@@ -29,11 +28,6 @@ public class TestPerson {
         Boolean value = PersonValidator.cellphoneNumber(cellphoneNumber);
         Boolean expectValue = true;
         Assert.assertEquals(expectValue, value);
-    }
-
-    @Test
-    public void testExistsPerson(){
-
     }
 
 }

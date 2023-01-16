@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.database.controllers;
 
-import com.jpgl.powerlifegym.database.models.PresentationProduct;
+import com.jpgl.powerlifegym.database.models.Presentation;
 import com.jpgl.powerlifegym.database.services.PresentationProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +16,22 @@ public class PresentationProductController {
     PresentationProductService service;
 
     @GetMapping("/presentations")
-    public List<PresentationProduct> index() {
+    public List<Presentation> index() {
         return service.All();
     }
 
     @GetMapping("/presentation/{id}")
-    public Optional<PresentationProduct> show(@PathVariable int id) {
+    public Optional<Presentation> show(@PathVariable int id) {
         return service.Find(id);
     }
 
     @PutMapping("/presentation/{model}")
-    public boolean create(@PathVariable PresentationProduct model) {
+    public boolean create(@PathVariable Presentation model) {
         return service.Add(model);
     }
 
     @DeleteMapping("/presentation/{model}")
-    public boolean destroy(@PathVariable PresentationProduct model) {
+    public boolean destroy(@PathVariable Presentation model) {
         return service.Delete(model);
     }
 

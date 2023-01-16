@@ -2,30 +2,31 @@ package com.jpgl.powerlifegym.database.models;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 @Entity
-@Table(name = "specializations", schema = "powerlifegymdb", catalog = "")
-public class Specialization {
+@Table(name = "presence_clients", schema = "powerlifegymdb", catalog = "")
+public class PresenceClient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "name")
-    private String name;
+    @Column(name = "id_client")
+    private int idClient;
     @Basic
-    @Column(name = "description")
-    private String description;
+    @Column(name = "date")
+    private Date date;
     @Basic
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @OneToMany(mappedBy = "specializationsByIdSpecialization")
-    private Collection<Instructor> instructorsById;
+    @ManyToOne
+    @JoinColumn(name = "id_client", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Client clientsByIdClient;
 
     public int getId() {
         return id;
@@ -35,20 +36,20 @@ public class Specialization {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getIdClient() {
+        return idClient;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
     }
 
-    public String getDescription() {
-        return description;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Timestamp getCreatedAt() {
@@ -72,11 +73,11 @@ public class Specialization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Specialization that = (Specialization) o;
+        PresenceClient that = (PresenceClient) o;
 
         if (id != that.id) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (idClient != that.idClient) return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
         if (updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null) return false;
 
@@ -86,18 +87,18 @@ public class Specialization {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + idClient;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         return result;
     }
 
-    public Collection<Instructor> getInstructorsById() {
-        return instructorsById;
+    public Client getClientsByIdClient() {
+        return clientsByIdClient;
     }
 
-    public void setInstructorsById(Collection<Instructor> instructorsById) {
-        this.instructorsById = instructorsById;
+    public void setClientsByIdClient(Client clientsByIdClient) {
+        this.clientsByIdClient = clientsByIdClient;
     }
 }

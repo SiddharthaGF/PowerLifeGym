@@ -1,70 +1,50 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.io.Serializable;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Table(name = "people")
 @Inheritance ( strategy=InheritanceType.JOINED )
-public class Person implements Serializable {
-
+public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private int id;
-
     @Basic
     @Column(name = "name")
     private String name;
-
     @Basic
     @Column(name = "lastname")
     private String lastname;
-
     @Basic
     @Column(name = "dni")
     private String dni;
-
     @Basic
     @Column(name = "id_gender")
     private int idGender;
-
     @Basic
     @Column(name = "birthdate")
     private Date birthdate;
-
-    @Temporal(TemporalType.TIMESTAMP)
+    @Basic
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
-
-    @Temporal(TemporalType.TIMESTAMP)
+    @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "peopleByIdPerson")
     private Collection<CellphoneNumber> cellphoneNumbersById;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "peopleByIdPerson")
     private Collection<Client> clientsById;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "peopleByIdPerson")
     private Collection<Email> emailsById;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "peopleByIdPerson")
     private Collection<Instructor> instructorsById;
-
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_gender", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_gender", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Gender gendersByIdGender;
 
     public int getId() {
@@ -99,33 +79,68 @@ public class Person implements Serializable {
         this.dni = dni;
     }
 
-    public Integer getIdGender() { return idGender; }
+    public int getIdGender() {
+        return idGender;
+    }
 
-    public void setIdGender(int idGender) { this.idGender = idGender; }
+    public void setIdGender(int idGender) {
+        this.idGender = idGender;
+    }
 
     public Date getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) { this.birthdate = birthdate; }
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
 
-    private Timestamp getCreatedAt() { return createdAt; }
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
 
-    private Timestamp getUpdatedAt() {
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
-        Person that = (Person) o;
-        return id == that.id && Objects.equals (name, that.name) && Objects.equals (lastname, that.lastname)  && Objects.equals (dni, that.dni) && Objects.equals (idGender, that.idGender) && Objects.equals (birthdate, that.birthdate) && Objects.equals (createdAt, that.createdAt) && Objects.equals (updatedAt, that.updatedAt);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person people = (Person) o;
+
+        if (id != people.id) return false;
+        if (idGender != people.idGender) return false;
+        if (name != null ? !name.equals(people.name) : people.name != null) return false;
+        if (lastname != null ? !lastname.equals(people.lastname) : people.lastname != null) return false;
+        if (dni != null ? !dni.equals(people.dni) : people.dni != null) return false;
+        if (birthdate != null ? !birthdate.equals(people.birthdate) : people.birthdate != null) return false;
+        if (createdAt != null ? !createdAt.equals(people.createdAt) : people.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(people.updatedAt) : people.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id, name, lastname, dni, idGender, birthdate, createdAt, updatedAt);
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
+        result = 31 * result + (dni != null ? dni.hashCode() : 0);
+        result = 31 * result + idGender;
+        result = 31 * result + (birthdate != null ? birthdate.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Collection<CellphoneNumber> getCellphoneNumbersById() {

@@ -1,55 +1,46 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Table(name = "clients")
 @PrimaryKeyJoinColumn ( name = "id_person")
 public class Client extends Person {
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int idClient;
-
+    private int id;
     @Basic
     @Column(name = "id_person", insertable = false, updatable = false)
     private Integer idPerson;
-
     @Basic
     @Column(name = "created_at", insertable = false, updatable = false)
-    private Timestamp createdAtClient;
-
+    private Timestamp createdAt;
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
-    private Timestamp updatedAtClient;
-
-    @JsonIgnore
+    private Timestamp updatedAt;
     @ManyToOne
     @JoinColumn(name = "id_person", referencedColumnName = "id", insertable = false, updatable = false)
     private Person peopleByIdPerson;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "clientsByIdClient")
     private Collection<Inscription> inscriptionsById;
-
-    @JsonIgnore
+    @OneToMany(mappedBy = "clientsByIdClient")
+    private Collection<Invoice> invoicesById;
     @OneToMany(mappedBy = "clientsByIdClient")
     private Collection<PhysicalMonitoring> physicalMonitoringsById;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "clientsByIdClient")
-    private Collection<CustomerAssistance> presenceClientsById;
+    private Collection<PresenceClient> presenceClientsById;
+    @OneToMany(mappedBy = "clientsByIdClient")
+    private Collection<SubscriptionPayment> subscriptionPaymentsById;
 
     public int getId() {
-        return idClient;
+        return id;
     }
 
     public void setId(int id) {
-        this.idClient = id;
+        this.id = id;
     }
 
     public Integer getIdPerson() {
@@ -60,25 +51,44 @@ public class Client extends Person {
         this.idPerson = idPerson;
     }
 
-    public Timestamp getCreatedAtClient() {
-        return createdAtClient;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public Timestamp getUpdatedAtClient() {
-        return updatedAtClient;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
-        Client that = (Client) o;
-        return idClient == that.idClient && Objects.equals (idPerson, that.idPerson) && Objects.equals (createdAtClient, that.createdAtClient) && Objects.equals (updatedAtClient, that.updatedAtClient);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        if (id != client.id) return false;
+        if (idPerson != null ? !idPerson.equals(client.idPerson) : client.idPerson != null) return false;
+        if (createdAt != null ? !createdAt.equals(client.createdAt) : client.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(client.updatedAt) : client.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (idClient, idPerson, createdAtClient, updatedAtClient);
+        int result = id;
+        result = 31 * result + (idPerson != null ? idPerson.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Person getPeopleByIdPerson() {
@@ -97,6 +107,14 @@ public class Client extends Person {
         this.inscriptionsById = inscriptionsById;
     }
 
+    public Collection<Invoice> getInvoicesById() {
+        return invoicesById;
+    }
+
+    public void setInvoicesById(Collection<Invoice> invoicesById) {
+        this.invoicesById = invoicesById;
+    }
+
     public Collection<PhysicalMonitoring> getPhysicalMonitoringsById() {
         return physicalMonitoringsById;
     }
@@ -105,11 +123,19 @@ public class Client extends Person {
         this.physicalMonitoringsById = physicalMonitoringsById;
     }
 
-    public Collection<CustomerAssistance> getPresenceClientsById() {
+    public Collection<PresenceClient> getPresenceClientsById() {
         return presenceClientsById;
     }
 
-    public void setPresenceClientsById(Collection<CustomerAssistance> presenceClientsById) {
+    public void setPresenceClientsById(Collection<PresenceClient> presenceClientsById) {
         this.presenceClientsById = presenceClientsById;
+    }
+
+    public Collection<SubscriptionPayment> getSubscriptionPaymentsById() {
+        return subscriptionPaymentsById;
+    }
+
+    public void setSubscriptionPaymentsById(Collection<SubscriptionPayment> subscriptionPaymentsById) {
+        this.subscriptionPaymentsById = subscriptionPaymentsById;
     }
 }

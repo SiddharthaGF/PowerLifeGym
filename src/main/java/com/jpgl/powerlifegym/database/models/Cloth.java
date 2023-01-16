@@ -1,9 +1,8 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
 @Table(name = "clothes")
@@ -11,13 +10,13 @@ import java.util.Objects;
 public class Cloth extends Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id_cloth;
+    private int id;
     @Basic
     @Column(name = "id_product", insertable = false, updatable = false)
-    private Integer idProduct;
+    private int idProduct;
     @Basic
     @Column(name = "id_gender")
-    private Integer idGender;
+    private int idGender;
     @Basic
     @Column(name = "size")
     private String size;
@@ -26,40 +25,38 @@ public class Cloth extends Product {
     private String color;
     @Basic
     @Column(name = "created_at", insertable = false, updatable = false)
-    private Timestamp createdAtCloth;
+    private Timestamp createdAt;
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
-    private Timestamp updatedAtCloth;
-    @JsonIgnore
+    private Timestamp updatedAt;
     @ManyToOne
-    @JoinColumn(name = "id_product", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_product", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Product productsByIdProduct;
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_gender", referencedColumnName = "id", insertable = false, updatable = false)
-    private Gender productsByIdGender;
+    @JoinColumn(name = "id_gender", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Gender gendersByIdGender;
 
     public int getId() {
-        return id_cloth;
+        return id;
     }
 
     public void setId(int id) {
-        this.id_cloth = id;
+        this.id = id;
     }
 
-    public Integer getIdProduct() {
+    public int getIdProduct() {
         return idProduct;
     }
 
-    public void setIdProduct(Integer idProduct) {
+    public void setIdProduct(int idProduct) {
         this.idProduct = idProduct;
     }
 
-    public Integer getIdGender() {
+    public int getIdGender() {
         return idGender;
     }
 
-    public void setIdGender(Integer idGender) {
+    public void setIdGender(int idGender) {
         this.idGender = idGender;
     }
 
@@ -79,25 +76,50 @@ public class Cloth extends Product {
         this.color = color;
     }
 
-    public Timestamp getCreatedAtCloth() {
-        return createdAtCloth;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public Timestamp getUpdatedAtCloth() {
-        return updatedAtCloth;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
-        Cloth that = (Cloth) o;
-        return id_cloth == that.id_cloth && Objects.equals (idProduct, that.idProduct) && Objects.equals (idGender, that.idGender) && Objects.equals (size, that.size) && Objects.equals (color, that.color) && Objects.equals (createdAtCloth, that.createdAtCloth) && Objects.equals (updatedAtCloth, that.updatedAtCloth);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Cloth cloth = (Cloth) o;
+
+        if (id != cloth.id) return false;
+        if (idProduct != cloth.idProduct) return false;
+        if (idGender != cloth.idGender) return false;
+        if (size != null ? !size.equals(cloth.size) : cloth.size != null) return false;
+        if (color != null ? !color.equals(cloth.color) : cloth.color != null) return false;
+        if (createdAt != null ? !createdAt.equals(cloth.createdAt) : cloth.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(cloth.updatedAt) : cloth.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id_cloth, idProduct, idGender, size, color, createdAtCloth, updatedAtCloth);
+        int result = id;
+        result = 31 * result + idProduct;
+        result = 31 * result + idGender;
+        result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + (color != null ? color.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Product getProductsByIdProduct() {
@@ -106,5 +128,13 @@ public class Cloth extends Product {
 
     public void setProductsByIdProduct(Product productsByIdProduct) {
         this.productsByIdProduct = productsByIdProduct;
+    }
+
+    public Gender getGendersByIdGender() {
+        return gendersByIdGender;
+    }
+
+    public void setGendersByIdGender(Gender gendersByIdGender) {
+        this.gendersByIdGender = gendersByIdGender;
     }
 }

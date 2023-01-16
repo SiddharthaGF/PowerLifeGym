@@ -2,16 +2,18 @@ package com.jpgl.powerlifegym.database.models;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "inscriptions")
-public class Inscription {
+@Table(name = "subscription_payment", schema = "powerlifegymdb", catalog = "")
+public class SubscriptionPayment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private int id;
+    @Basic
+    @Column(name = "id_payment_method")
+    private int idPaymentMethod;
     @Basic
     @Column(name = "id_client")
     private int idClient;
@@ -19,14 +21,8 @@ public class Inscription {
     @Column(name = "id_subscription")
     private int idSubscription;
     @Basic
-    @Column(name = "id_group")
-    private int idGroup;
-    @Basic
-    @Column(name = "start_date")
-    private Date startDate;
-    @Basic
-    @Column(name = "end_date")
-    private Date endDate;
+    @Column(name = "id_subscription_promotions")
+    private Integer idSubscriptionPromotions;
     @Basic
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
@@ -34,14 +30,17 @@ public class Inscription {
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
     @ManyToOne
+    @JoinColumn(name = "id_payment_method", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private PaymentMethod paymentMethodByIdPaymentMethod;
+    @ManyToOne
     @JoinColumn(name = "id_client", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Client clientsByIdClient;
     @ManyToOne
     @JoinColumn(name = "id_subscription", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Subscription subscriptionsByIdSubscription;
     @ManyToOne
-    @JoinColumn(name = "id_group", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Group groupsByIdGroup;
+    @JoinColumn(name = "id_subscription_promotions", referencedColumnName = "id", insertable = false, updatable = false)
+    private SubscriptionPromotion subscriptionPromotionsByIdSubscriptionPromotions;
 
     public int getId() {
         return id;
@@ -49,6 +48,14 @@ public class Inscription {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdPaymentMethod() {
+        return idPaymentMethod;
+    }
+
+    public void setIdPaymentMethod(int idPaymentMethod) {
+        this.idPaymentMethod = idPaymentMethod;
     }
 
     public int getIdClient() {
@@ -67,28 +74,12 @@ public class Inscription {
         this.idSubscription = idSubscription;
     }
 
-    public int getIdGroup() {
-        return idGroup;
+    public Integer getIdSubscriptionPromotions() {
+        return idSubscriptionPromotions;
     }
 
-    public void setIdGroup(int idGroup) {
-        this.idGroup = idGroup;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setIdSubscriptionPromotions(Integer idSubscriptionPromotions) {
+        this.idSubscriptionPromotions = idSubscriptionPromotions;
     }
 
     public Timestamp getCreatedAt() {
@@ -112,14 +103,14 @@ public class Inscription {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Inscription that = (Inscription) o;
+        SubscriptionPayment that = (SubscriptionPayment) o;
 
         if (id != that.id) return false;
+        if (idPaymentMethod != that.idPaymentMethod) return false;
         if (idClient != that.idClient) return false;
         if (idSubscription != that.idSubscription) return false;
-        if (idGroup != that.idGroup) return false;
-        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
-        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
+        if (idSubscriptionPromotions != null ? !idSubscriptionPromotions.equals(that.idSubscriptionPromotions) : that.idSubscriptionPromotions != null)
+            return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
         if (updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null) return false;
 
@@ -129,14 +120,21 @@ public class Inscription {
     @Override
     public int hashCode() {
         int result = id;
+        result = 31 * result + idPaymentMethod;
         result = 31 * result + idClient;
         result = 31 * result + idSubscription;
-        result = 31 * result + idGroup;
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + (idSubscriptionPromotions != null ? idSubscriptionPromotions.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         return result;
+    }
+
+    public PaymentMethod getPaymentMethodByIdPaymentMethod() {
+        return paymentMethodByIdPaymentMethod;
+    }
+
+    public void setPaymentMethodByIdPaymentMethod(PaymentMethod paymentMethodByIdPaymentMethod) {
+        this.paymentMethodByIdPaymentMethod = paymentMethodByIdPaymentMethod;
     }
 
     public Client getClientsByIdClient() {
@@ -155,11 +153,11 @@ public class Inscription {
         this.subscriptionsByIdSubscription = subscriptionsByIdSubscription;
     }
 
-    public Group getGroupsByIdGroup() {
-        return groupsByIdGroup;
+    public SubscriptionPromotion getSubscriptionPromotionsByIdSubscriptionPromotions() {
+        return subscriptionPromotionsByIdSubscriptionPromotions;
     }
 
-    public void setGroupsByIdGroup(Group groupsByIdGroup) {
-        this.groupsByIdGroup = groupsByIdGroup;
+    public void setSubscriptionPromotionsByIdSubscriptionPromotions(SubscriptionPromotion subscriptionPromotionsByIdSubscriptionPromotions) {
+        this.subscriptionPromotionsByIdSubscriptionPromotions = subscriptionPromotionsByIdSubscriptionPromotions;
     }
 }

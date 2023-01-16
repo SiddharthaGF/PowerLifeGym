@@ -1,17 +1,15 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Table(name = "instructors")
 @PrimaryKeyJoinColumn ( name = "id_person")
 public class Instructor extends Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
     @Column(name = "id")
     private int id;
     @Basic
@@ -26,14 +24,11 @@ public class Instructor extends Person {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @JsonIgnore
     @OneToMany(mappedBy = "instructorsByIdInstructor")
     private Collection<Group> groupsById;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_person", referencedColumnName = "id", insertable = false, updatable = false)
     private Person peopleByIdPerson;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_specialization", referencedColumnName = "id", insertable = false, updatable = false)
     private Specialization specializationsByIdSpecialization;
@@ -81,14 +76,28 @@ public class Instructor extends Person {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         Instructor that = (Instructor) o;
-        return id == that.id && Objects.equals (idPerson, that.idPerson) && Objects.equals (idSpecialization, that.idSpecialization) && Objects.equals (createdAt, that.createdAt) && Objects.equals (updatedAt, that.updatedAt);
+
+        if (id != that.id) return false;
+        if (idPerson != null ? !idPerson.equals(that.idPerson) : that.idPerson != null) return false;
+        if (idSpecialization != null ? !idSpecialization.equals(that.idSpecialization) : that.idSpecialization != null)
+            return false;
+        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id, idPerson, idSpecialization, createdAt, updatedAt);
+        int result = id;
+        result = 31 * result + (idPerson != null ? idPerson.hashCode() : 0);
+        result = 31 * result + (idSpecialization != null ? idSpecialization.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Collection<Group> getGroupsById() {

@@ -1,12 +1,11 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
-@Table(name = "cellphone_numbers")
+@Table(name = "cellphone_numbers", schema = "powerlifegymdb", catalog = "")
 public class CellphoneNumber {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -14,7 +13,7 @@ public class CellphoneNumber {
     private int id;
     @Basic
     @Column(name = "id_person")
-    private Integer idPerson;
+    private int idPerson;
     @Basic
     @Column(name = "number")
     private String number;
@@ -24,10 +23,8 @@ public class CellphoneNumber {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_person", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_person", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Person peopleByIdPerson;
 
     public int getId() {
@@ -38,11 +35,11 @@ public class CellphoneNumber {
         this.id = id;
     }
 
-    public Integer getIdPerson() {
+    public int getIdPerson() {
         return idPerson;
     }
 
-    public void setIdPerson(Integer idPerson) {
+    public void setIdPerson(int idPerson) {
         this.idPerson = idPerson;
     }
 
@@ -73,14 +70,27 @@ public class CellphoneNumber {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         CellphoneNumber that = (CellphoneNumber) o;
-        return id == that.id && Objects.equals (idPerson, that.idPerson) && Objects.equals (number, that.number) && Objects.equals (createdAt, that.createdAt) && Objects.equals (updatedAt, that.updatedAt);
+
+        if (id != that.id) return false;
+        if (idPerson != that.idPerson) return false;
+        if (number != null ? !number.equals(that.number) : that.number != null) return false;
+        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id, idPerson, number, createdAt, updatedAt);
+        int result = id;
+        result = 31 * result + idPerson;
+        result = 31 * result + (number != null ? number.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Person getPeopleByIdPerson() {

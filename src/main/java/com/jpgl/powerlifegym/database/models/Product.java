@@ -1,17 +1,15 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Table(name = "products")
 @Inheritance ( strategy=InheritanceType.JOINED )
-public class Product implements Serializable {
+public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -34,13 +32,12 @@ public class Product implements Serializable {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @JsonIgnore
     @OneToMany(mappedBy = "productsByIdProduct")
     private Collection<Cloth> clothesById;
-    @JsonIgnore
     @OneToMany(mappedBy = "productsByIdProduct")
-    private Collection<Promotion> promotionsById;
-    @JsonIgnore
+    private Collection<Inline> inlinesById;
+    @OneToMany(mappedBy = "productsByIdProduct")
+    private Collection<ProductPromotion> productPromotionsById;
     @OneToMany(mappedBy = "productsByIdProduct")
     private Collection<Supplement> supplementsById;
 
@@ -103,14 +100,31 @@ public class Product implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
-        Product that = (Product) o;
-        return id == that.id && Objects.equals (price, that.price) && Objects.equals (description, that.description) && Objects.equals (quantity, that.quantity) && Objects.equals (brand, that.brand) && Objects.equals (createdAt, that.createdAt) && Objects.equals (updatedAt, that.updatedAt);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (id != product.id) return false;
+        if (price != null ? !price.equals(product.price) : product.price != null) return false;
+        if (description != null ? !description.equals(product.description) : product.description != null) return false;
+        if (quantity != null ? !quantity.equals(product.quantity) : product.quantity != null) return false;
+        if (brand != null ? !brand.equals(product.brand) : product.brand != null) return false;
+        if (createdAt != null ? !createdAt.equals(product.createdAt) : product.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(product.updatedAt) : product.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id, price, description, quantity, brand, createdAt, updatedAt);
+        int result = id;
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
+        result = 31 * result + (brand != null ? brand.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Collection<Cloth> getClothesById() {
@@ -121,12 +135,20 @@ public class Product implements Serializable {
         this.clothesById = clothesById;
     }
 
-    public Collection<Promotion> getPromotionsById() {
-        return promotionsById;
+    public Collection<Inline> getInlinesById() {
+        return inlinesById;
     }
 
-    public void setPromotionsById(Collection<Promotion> promotionsById) {
-        this.promotionsById = promotionsById;
+    public void setInlinesById(Collection<Inline> inlinesById) {
+        this.inlinesById = inlinesById;
+    }
+
+    public Collection<ProductPromotion> getProductPromotionsById() {
+        return productPromotionsById;
+    }
+
+    public void setProductPromotionsById(Collection<ProductPromotion> productPromotionsById) {
+        this.productPromotionsById = productPromotionsById;
     }
 
     public Collection<Supplement> getSupplementsById() {

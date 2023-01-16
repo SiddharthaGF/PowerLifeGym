@@ -1,12 +1,11 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
-@Table(name = "emails")
+@Table(name = "emails", schema = "powerlifegymdb", catalog = "")
 public class Email {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -14,7 +13,7 @@ public class Email {
     private int id;
     @Basic
     @Column(name = "id_person")
-    private Integer idPerson;
+    private int idPerson;
     @Basic
     @Column(name = "email")
     private String email;
@@ -24,9 +23,8 @@ public class Email {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_person", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_person", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Person peopleByIdPerson;
 
     public int getId() {
@@ -37,11 +35,11 @@ public class Email {
         this.id = id;
     }
 
-    public Integer getIdPerson() {
+    public int getIdPerson() {
         return idPerson;
     }
 
-    public void setIdPerson(Integer idPerson) {
+    public void setIdPerson(int idPerson) {
         this.idPerson = idPerson;
     }
 
@@ -72,14 +70,27 @@ public class Email {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
-        Email that = (Email) o;
-        return id == that.id && Objects.equals (idPerson, that.idPerson) && Objects.equals (email, that.email) && Objects.equals (createdAt, that.createdAt) && Objects.equals (updatedAt, that.updatedAt);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Email email1 = (Email) o;
+
+        if (id != email1.id) return false;
+        if (idPerson != email1.idPerson) return false;
+        if (email != null ? !email.equals(email1.email) : email1.email != null) return false;
+        if (createdAt != null ? !createdAt.equals(email1.createdAt) : email1.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(email1.updatedAt) : email1.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id, idPerson, email, createdAt, updatedAt);
+        int result = id;
+        result = 31 * result + idPerson;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Person getPeopleByIdPerson() {

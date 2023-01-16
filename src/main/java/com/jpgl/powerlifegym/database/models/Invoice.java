@@ -1,32 +1,30 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "presence_clients")
-public class CustomerAssistance {
+public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private int id;
     @Basic
     @Column(name = "id_client")
-    private Integer idClient;
-    @Basic
-    @Column(name = "date")
-    private Timestamp date;
+    private int idClient;
     @Basic
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @JsonIgnore
+    @OneToMany(mappedBy = "invoiceByIdInvoice")
+    private Collection<Inline> inlinesById;
     @ManyToOne
-    @JoinColumn(name = "id_client", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_client", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Client clientsByIdClient;
 
     public int getId() {
@@ -37,20 +35,12 @@ public class CustomerAssistance {
         this.id = id;
     }
 
-    public Integer getIdClient() {
+    public int getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(Integer idClient) {
+    public void setIdClient(int idClient) {
         this.idClient = idClient;
-    }
-
-    public Timestamp getDate() {
-        return date;
-    }
-
-    public void setDate(Timestamp date) {
-        this.date = date;
     }
 
     public Timestamp getCreatedAt() {
@@ -72,14 +62,31 @@ public class CustomerAssistance {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
-        CustomerAssistance that = (CustomerAssistance) o;
-        return id == that.id && Objects.equals (idClient, that.idClient) && Objects.equals (date, that.date) && Objects.equals (createdAt, that.createdAt) && Objects.equals (updatedAt, that.updatedAt);
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Invoice invoice = (Invoice) o;
+
+        if (id != invoice.id) return false;
+        if (idClient != invoice.idClient) return false;
+        if (!Objects.equals(createdAt, invoice.createdAt)) return false;
+        return Objects.equals(updatedAt, invoice.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id, idClient, date, createdAt, updatedAt);
+        int result = id;
+        result = 31 * result + idClient;
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
+    }
+
+    public Collection<Inline> getInlinesById() {
+        return inlinesById;
+    }
+
+    public void setInlinesById(Collection<Inline> inlinesById) {
+        this.inlinesById = inlinesById;
     }
 
     public Client getClientsByIdClient() {

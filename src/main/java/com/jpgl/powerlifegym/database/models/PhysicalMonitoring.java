@@ -1,12 +1,11 @@
 package com.jpgl.powerlifegym.database.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
-@Table(name = "physical_monitoring")
+@Table(name = "physical_monitoring", schema = "powerlifegymdb", catalog = "")
 public class PhysicalMonitoring {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -14,7 +13,7 @@ public class PhysicalMonitoring {
     private int id;
     @Basic
     @Column(name = "id_client")
-    private Integer idClient;
+    private int idClient;
     @Basic
     @Column(name = "height")
     private Integer height;
@@ -27,9 +26,8 @@ public class PhysicalMonitoring {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id_client", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "id_client", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Client clientsByIdClient;
 
     public int getId() {
@@ -40,11 +38,11 @@ public class PhysicalMonitoring {
         this.id = id;
     }
 
-    public Integer getIdClient() {
+    public int getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(Integer idClient) {
+    public void setIdClient(int idClient) {
         this.idClient = idClient;
     }
 
@@ -83,14 +81,29 @@ public class PhysicalMonitoring {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass () != o.getClass ()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         PhysicalMonitoring that = (PhysicalMonitoring) o;
-        return id == that.id && Objects.equals (idClient, that.idClient) && Objects.equals (height, that.height) && Objects.equals (weight, that.weight) && Objects.equals (createdAt, that.createdAt) && Objects.equals (updatedAt, that.updatedAt);
+
+        if (id != that.id) return false;
+        if (idClient != that.idClient) return false;
+        if (height != null ? !height.equals(that.height) : that.height != null) return false;
+        if (weight != null ? !weight.equals(that.weight) : that.weight != null) return false;
+        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (id, idClient, height, weight, createdAt, updatedAt);
+        int result = id;
+        result = 31 * result + idClient;
+        result = 31 * result + (height != null ? height.hashCode() : 0);
+        result = 31 * result + (weight != null ? weight.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        return result;
     }
 
     public Client getClientsByIdClient() {
