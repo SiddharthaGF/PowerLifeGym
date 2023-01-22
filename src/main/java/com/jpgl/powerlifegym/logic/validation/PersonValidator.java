@@ -1,6 +1,7 @@
 package com.jpgl.powerlifegym.logic.validation;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.web.client.RestTemplate;
 
 import static java.lang.Integer.parseInt;
 import static java.util.regex.Pattern.compile;
@@ -40,6 +41,20 @@ public class PersonValidator {
             sum += ((digit % 10) + (digit / 10));
         }
         return (sum % 10 == 0) && (0 == verificador) || (10 - (sum % 10)) == verificador;
+    }
+
+    public static boolean Exists(Object idOrDni) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/api/v1/person/exists/" + idOrDni;
+        Boolean response = restTemplate.getForObject(url, Boolean.class);
+        return Boolean.TRUE.equals(response);
+    }
+
+    public static boolean Exists(String dni) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/api/v1/person/exists/" + dni;
+        Boolean response = restTemplate.getForObject(url, Boolean.class);
+        return Boolean.TRUE.equals(response);
     }
 
 }

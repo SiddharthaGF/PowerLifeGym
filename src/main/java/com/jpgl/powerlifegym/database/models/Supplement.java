@@ -1,5 +1,6 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -33,9 +34,11 @@ public class Supplement extends Product {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_product", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Product productsByIdProduct;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_presentation", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Presentation presentationsByIdPresentation;

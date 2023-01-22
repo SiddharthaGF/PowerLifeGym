@@ -1,5 +1,7 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -21,8 +23,10 @@ public class Invoice {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonManagedReference
     @OneToMany(mappedBy = "invoiceByIdInvoice")
     private Collection<Inline> inlinesById;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_client", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Client clientsByIdClient;

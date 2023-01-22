@@ -1,5 +1,7 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -24,6 +26,7 @@ public class Specialization {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonIgnore
     @OneToMany(mappedBy = "specializationsByIdSpecialization")
     private Collection<Instructor> instructorsById;
 

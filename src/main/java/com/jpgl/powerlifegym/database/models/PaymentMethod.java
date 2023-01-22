@@ -1,5 +1,6 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -21,6 +22,7 @@ public class PaymentMethod {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonIgnore
     @OneToMany(mappedBy = "paymentMethodByIdPaymentMethod")
     private Collection<SubscriptionPayment> subscriptionPaymentsById;
 

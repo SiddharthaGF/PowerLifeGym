@@ -30,4 +30,12 @@ public class PersonTest {
         Assert.assertEquals(expectValue, value);
     }
 
+    @Test
+    public void testPersonExists(){
+        String dni = "1805206479";
+        Boolean value = PersonValidator.Exists(dni);
+        Boolean expectValue = true;
+        Assert.assertEquals(expectValue, value);
+    }
+
 }

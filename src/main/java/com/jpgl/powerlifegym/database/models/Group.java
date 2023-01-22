@@ -1,12 +1,15 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.Collection;
 
 @Entity
-@Table(name = "groups", schema = "powerlifegymdb", catalog = "")
+@Table(name = "`groups`")
 public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -24,9 +27,11 @@ public class Group {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @ManyToOne
-    @JoinColumn(name = "id_instructor", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JsonManagedReference
+    @OneToOne
+    @JoinColumn(name = "id_instructor", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
     private Instructor instructorsByIdInstructor;
+    @JsonBackReference
     @OneToMany(mappedBy = "groupsByIdGroup")
     private Collection<Inscription> inscriptionsById;
 

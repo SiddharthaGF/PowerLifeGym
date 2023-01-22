@@ -1,5 +1,7 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -7,9 +9,9 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "clients")
-@PrimaryKeyJoinColumn ( name = "id_person")
 public class Client extends Person {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "id")
     private int id;
     @Basic
@@ -21,17 +23,23 @@ public class Client extends Person {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @ManyToOne
+    @JsonIgnore
+    @OneToOne
     @JoinColumn(name = "id_person", referencedColumnName = "id", insertable = false, updatable = false)
     private Person peopleByIdPerson;
+    @JsonIgnore
     @OneToMany(mappedBy = "clientsByIdClient")
     private Collection<Inscription> inscriptionsById;
+    @JsonIgnore
     @OneToMany(mappedBy = "clientsByIdClient")
     private Collection<Invoice> invoicesById;
+    @JsonIgnore
     @OneToMany(mappedBy = "clientsByIdClient")
     private Collection<PhysicalMonitoring> physicalMonitoringsById;
+    @JsonIgnore
     @OneToMany(mappedBy = "clientsByIdClient")
     private Collection<PresenceClient> presenceClientsById;
+    @JsonIgnore
     @OneToMany(mappedBy = "clientsByIdClient")
     private Collection<SubscriptionPayment> subscriptionPaymentsById;
 

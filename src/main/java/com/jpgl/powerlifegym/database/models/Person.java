@@ -1,5 +1,7 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -10,8 +12,8 @@ import java.util.Collection;
 @Table(name = "people")
 @Inheritance ( strategy=InheritanceType.JOINED )
 public class Person {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     @Basic
@@ -35,14 +37,12 @@ public class Person {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonManagedReference
     @OneToMany(mappedBy = "peopleByIdPerson")
     private Collection<CellphoneNumber> cellphoneNumbersById;
-    @OneToMany(mappedBy = "peopleByIdPerson")
-    private Collection<Client> clientsById;
+    @JsonManagedReference
     @OneToMany(mappedBy = "peopleByIdPerson")
     private Collection<Email> emailsById;
-    @OneToMany(mappedBy = "peopleByIdPerson")
-    private Collection<Instructor> instructorsById;
     @ManyToOne
     @JoinColumn(name = "id_gender", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Gender gendersByIdGender;
@@ -151,28 +151,12 @@ public class Person {
         this.cellphoneNumbersById = cellphoneNumbersById;
     }
 
-    public Collection<Client> getClientsById() {
-        return clientsById;
-    }
-
-    public void setClientsById(Collection<Client> clientsById) {
-        this.clientsById = clientsById;
-    }
-
     public Collection<Email> getEmailsById() {
         return emailsById;
     }
 
     public void setEmailsById(Collection<Email> emailsById) {
         this.emailsById = emailsById;
-    }
-
-    public Collection<Instructor> getInstructorsById() {
-        return instructorsById;
-    }
-
-    public void setInstructorsById(Collection<Instructor> instructorsById) {
-        this.instructorsById = instructorsById;
     }
 
     public Gender getGendersByIdGender() {

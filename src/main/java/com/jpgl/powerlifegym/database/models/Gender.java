@@ -1,5 +1,6 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -24,8 +25,10 @@ public class Gender {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonIgnore
     @OneToMany(mappedBy = "gendersByIdGender")
     private Collection<Cloth> clothesById;
+    @JsonIgnore
     @OneToMany(mappedBy = "gendersByIdGender")
     private Collection<Person> peopleById;
 

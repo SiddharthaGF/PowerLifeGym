@@ -1,5 +1,6 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -28,10 +29,13 @@ public class Subscription {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonIgnore
     @OneToMany(mappedBy = "subscriptionsByIdSubscription")
     private Collection<Inscription> inscriptionsById;
+    @JsonIgnore
     @OneToMany(mappedBy = "subscriptionsByIdSubscription")
     private Collection<SubscriptionPayment> subscriptionPaymentsById;
+    @JsonIgnore
     @OneToMany(mappedBy = "subscriptionsByIdSubscription")
     private Collection<SubscriptionPromotion> subscriptionPromotionsById;
 

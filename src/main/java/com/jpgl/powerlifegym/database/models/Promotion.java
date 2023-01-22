@@ -1,5 +1,7 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -25,8 +27,10 @@ public class Promotion {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonManagedReference
     @OneToMany(mappedBy = "promotionsByIdPromotion")
     private Collection<ProductPromotion> productPromotionsById;
+    @JsonManagedReference
     @OneToMany(mappedBy = "promotionsByIdPromotion")
     private Collection<SubscriptionPromotion> subscriptionPromotionsById;
 

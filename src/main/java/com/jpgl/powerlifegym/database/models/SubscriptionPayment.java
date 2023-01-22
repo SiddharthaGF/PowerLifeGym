@@ -1,5 +1,6 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -29,15 +30,19 @@ public class SubscriptionPayment {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_payment_method", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private PaymentMethod paymentMethodByIdPaymentMethod;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_client", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Client clientsByIdClient;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_subscription", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Subscription subscriptionsByIdSubscription;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_subscription_promotions", referencedColumnName = "id", insertable = false, updatable = false)
     private SubscriptionPromotion subscriptionPromotionsByIdSubscriptionPromotions;

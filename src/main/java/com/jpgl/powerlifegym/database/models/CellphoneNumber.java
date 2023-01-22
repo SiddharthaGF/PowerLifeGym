@@ -1,5 +1,6 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -23,6 +24,7 @@ public class CellphoneNumber {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "id_person", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Person peopleByIdPerson;

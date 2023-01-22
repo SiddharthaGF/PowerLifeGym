@@ -1,5 +1,8 @@
 package com.jpgl.powerlifegym.database.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -7,8 +10,9 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "instructors")
-@PrimaryKeyJoinColumn ( name = "id_person")
 public class Instructor extends Person {
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
@@ -24,11 +28,11 @@ public class Instructor extends Person {
     @Basic
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Timestamp updatedAt;
-    @OneToMany(mappedBy = "instructorsByIdInstructor")
-    private Collection<Group> groupsById;
-    @ManyToOne
+    @JsonIgnore
+    @OneToOne
     @JoinColumn(name = "id_person", referencedColumnName = "id", insertable = false, updatable = false)
     private Person peopleByIdPerson;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_specialization", referencedColumnName = "id", insertable = false, updatable = false)
     private Specialization specializationsByIdSpecialization;
@@ -98,14 +102,6 @@ public class Instructor extends Person {
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         return result;
-    }
-
-    public Collection<Group> getGroupsById() {
-        return groupsById;
-    }
-
-    public void setGroupsById(Collection<Group> groupsById) {
-        this.groupsById = groupsById;
     }
 
     public Person getPeopleByIdPerson() {
