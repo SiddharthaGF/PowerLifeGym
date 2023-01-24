@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.PresenceClient;
+import com.jpgl.powerlifegym.database.models.PresenceClientsModel;
 import com.jpgl.powerlifegym.logic.services.PresenceClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +16,22 @@ public class CustomerAssistanceController {
     PresenceClientService service;
 
     @GetMapping("/assistance")
-    public List<PresenceClient> index() {
+    public List<PresenceClientsModel> index() {
         return service.All();
     }
 
     @GetMapping("/assistance/{id}")
-    public Optional<PresenceClient> show(@PathVariable int id) {
+    public Optional<PresenceClientsModel> show(@PathVariable int id) {
         return service.Find(id);
     }
 
     @PutMapping("/assistance/{model}")
-    public boolean create(@PathVariable PresenceClient model) {
+    public boolean create(@PathVariable PresenceClientsModel model) {
         return service.Add(model);
     }
 
     @DeleteMapping("/assistance/{model}")
-    public boolean destroy(@PathVariable PresenceClient model) {
+    public boolean destroy(@PathVariable PresenceClientsModel model) {
         return service.Delete(model);
     }
 

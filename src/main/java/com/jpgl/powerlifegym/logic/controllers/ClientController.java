@@ -1,8 +1,9 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.Client;
+import com.jpgl.powerlifegym.database.models.ClientModel;
 import com.jpgl.powerlifegym.logic.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -29,20 +30,25 @@ public class ClientController {
     }
 
     @GetMapping("/client/{idOrDni}")
-    public Optional<Client> show(@PathVariable String idOrDni) {
+    public Optional<ClientModel> show(@PathVariable String idOrDni) {
         return service.Find(idOrDni);
     }
 
     @GetMapping("/client/exists/{idOrDni}")
     public boolean exists(@PathVariable String idOrDni) { return service.Exists(idOrDni); }
 
+    @PostMapping ("/client")
+    public ResponseEntity<?> create(@RequestBody ClientModel model) {
+        return service.Add(model);
+    }
+
     @PutMapping("/client/{client}")
-    public boolean create(@PathVariable Client client) {
+    public ResponseEntity<?> update(@PathVariable ClientModel client) {
         return service.Add(client);
     }
 
     @DeleteMapping("/client/{client}")
-    public boolean destroy(@PathVariable Client client) {
+    public boolean destroy(@PathVariable ClientModel client) {
         return service.Delete(client);
     }
 

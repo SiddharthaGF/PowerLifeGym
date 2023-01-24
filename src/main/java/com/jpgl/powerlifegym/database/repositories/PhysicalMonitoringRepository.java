@@ -1,10 +1,10 @@
 package com.jpgl.powerlifegym.database.repositories;
 
-import com.jpgl.powerlifegym.database.models.PhysicalMonitoring;
+import com.jpgl.powerlifegym.database.models.PhysicalMonitoringModel;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PhysicalMonitoringRepository extends CrudRepository<PhysicalMonitoring, Integer> {
+public interface PhysicalMonitoringRepository extends CrudRepository<PhysicalMonitoringModel, Integer> {
 
 }

@@ -3,25 +3,15 @@ package com.jpgl.powerlifegym.logic.validation;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
+
 import static java.lang.Integer.parseInt;
-import static java.util.regex.Pattern.compile;
 
-public class PersonValidator {
+public class PersonValidator extends StringValidator {
 
-    private static final String PATRON_EMAIL = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)(\\.[A-Za-z]{2,})$";
-
-    public static boolean Email(@NotNull String email) {
-        var patron = compile(PATRON_EMAIL);
-        var comparador = patron.matcher(email);
-        return comparador.matches();
-    }
-
-    public static boolean cellphoneNumber(@NotNull String cellphoneNumber) {
-        if (cellphoneNumber.length() == 10) {
-            return cellphoneNumber.charAt(0) == '0' && cellphoneNumber.charAt(1) == '9';
-        }
-        return  false;
-    }
+    static RestTemplate restTemplate = new RestTemplate();
 
     public static boolean Dni(@NotNull String dni) {
         if (dni.length() != 10) {
@@ -43,18 +33,27 @@ public class PersonValidator {
         return (sum % 10 == 0) && (0 == verificador) || (10 - (sum % 10)) == verificador;
     }
 
-    public static boolean Exists(Object idOrDni) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8080/api/v1/person/exists/" + idOrDni;
+    public static boolean Exists(Object idOrDni, String tableName) {
+        String url = "http://localhost:8080/api/v1/" + tableName + "/exists/" + idOrDni;
         Boolean response = restTemplate.getForObject(url, Boolean.class);
         return Boolean.TRUE.equals(response);
     }
 
-    public static boolean Exists(String dni) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8080/api/v1/person/exists/" + dni;
+    public static boolean Exists(String dni, String tableName) {
+        String url = "http://localhost:8080/api/v1/" + tableName + "/exists/" + dni;
         Boolean response = restTemplate.getForObject(url, Boolean.class);
         return Boolean.TRUE.equals(response);
     }
+
+    public static boolean Birthdate(@NotNull Date date) {
+        LocalDate today = LocalDate.now();
+        int years = Period.between(date.toLocalDate(), today).getYears();
+        return years >= 7;
+    }
+
+    public static boolean NameOrLastname(String nameOrLastname) {
+        return nameOrLastname == null || nameOrLastname.isBlank();
+    }
+
 
 }

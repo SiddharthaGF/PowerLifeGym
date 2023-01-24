@@ -1,9 +1,7 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.Invoice;
-import com.jpgl.powerlifegym.database.models.Supplement;
+import com.jpgl.powerlifegym.database.models.InvoiceModel;
 import com.jpgl.powerlifegym.database.repositories.InvoiceRepository;
-import com.jpgl.powerlifegym.database.repositories.SupplementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +14,19 @@ public class InvoiceService {
     @Autowired
     InvoiceRepository repository;
 
-    public List<Invoice> All(){
-        return (List<Invoice>) repository.findAll();
+    public List<InvoiceModel> All(){
+        return (List<InvoiceModel>) repository.findAll();
     }
 
-    public Optional<Invoice> Find(int id) {
+    public Optional<InvoiceModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(Invoice model) {
+    public boolean Update(InvoiceModel model) {
         return Add(model);
     }
 
-    public boolean Add(Invoice model) {
+    public boolean Add(InvoiceModel model) {
         try {
             repository.save(model);
             return true;
@@ -37,7 +35,7 @@ public class InvoiceService {
         }
     }
 
-    public boolean Delete(Invoice model) {
+    public boolean Delete(InvoiceModel model) {
         try {
             repository.delete(model);
             return true;

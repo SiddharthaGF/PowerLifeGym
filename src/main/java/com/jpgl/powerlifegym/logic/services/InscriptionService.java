@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.Inscription;
+import com.jpgl.powerlifegym.database.models.InscriptionModel;
 import com.jpgl.powerlifegym.database.repositories.InscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,19 +14,19 @@ public class InscriptionService {
     @Autowired
     InscriptionRepository repository;
 
-    public List<Inscription> All(){
-        return (List<Inscription>) repository.findAll();
+    public List<InscriptionModel> All(){
+        return (List<InscriptionModel>) repository.findAll();
     }
 
-    public Optional<Inscription> Find(int id) {
+    public Optional<InscriptionModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(Inscription model) {
+    public boolean Update(InscriptionModel model) {
         return Add(model);
     }
 
-    public boolean Add(Inscription model) {
+    public boolean Add(InscriptionModel model) {
         try {
             repository.save(model);
             return true;
@@ -35,7 +35,7 @@ public class InscriptionService {
         }
     }
 
-    public boolean Delete(Inscription model) {
+    public boolean Delete(InscriptionModel model) {
         try {
             repository.delete(model);
             return true;

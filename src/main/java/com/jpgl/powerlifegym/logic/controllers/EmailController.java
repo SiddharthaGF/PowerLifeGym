@@ -1,8 +1,9 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.Email;
+import com.jpgl.powerlifegym.database.models.EmailModel;
 import com.jpgl.powerlifegym.logic.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +17,23 @@ public class EmailController {
     EmailService service;
 
     @GetMapping("/email")
-    public List<Email> index() {
+    public List<EmailModel> index() {
         return service.All();
     }
 
     @GetMapping("/email/{id}")
-    public Optional<Email> show(@PathVariable int id) {
+    public Optional<EmailModel> show(@PathVariable int id) {
         return service.Find(id);
     }
 
-    @PutMapping("/email/{model}")
-    public boolean create(@PathVariable Email model) {
+    @PostMapping("/email")
+    public ResponseEntity<?> create(@RequestBody EmailModel model) {
         return service.Add(model);
     }
 
+
     @DeleteMapping("/email/{model}")
-    public boolean destroy(@PathVariable Email model) {
+    public boolean destroy(@PathVariable EmailModel model) {
         return service.Delete(model);
     }
 

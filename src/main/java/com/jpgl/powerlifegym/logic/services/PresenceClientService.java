@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.PresenceClient;
+import com.jpgl.powerlifegym.database.models.PresenceClientsModel;
 import com.jpgl.powerlifegym.database.repositories.CustomerAssistanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,19 +14,19 @@ public class PresenceClientService {
     @Autowired
     CustomerAssistanceRepository repository;
 
-    public List<PresenceClient> All(){
-        return (List<PresenceClient>) repository.findAll();
+    public List<PresenceClientsModel> All(){
+        return (List<PresenceClientsModel>) repository.findAll();
     }
 
-    public Optional<PresenceClient> Find(int id) {
+    public Optional<PresenceClientsModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(PresenceClient model) {
+    public boolean Update(PresenceClientsModel model) {
         return Add(model);
     }
 
-    public boolean Add(PresenceClient model) {
+    public boolean Add(PresenceClientsModel model) {
         try {
             repository.save(model);
             return true;
@@ -35,7 +35,7 @@ public class PresenceClientService {
         }
     }
 
-    public boolean Delete(PresenceClient model) {
+    public boolean Delete(PresenceClientsModel model) {
         try {
             repository.delete(model);
             return true;

@@ -1,7 +1,6 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.SubscriptionPayment;
-import com.jpgl.powerlifegym.database.models.User;
+import com.jpgl.powerlifegym.database.models.SubscriptionPaymentModel;
 import com.jpgl.powerlifegym.database.repositories.SubscriptionPaymentRepository;
 import com.jpgl.powerlifegym.database.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +15,19 @@ public class SubscriptionPaymentService {
     @Autowired
     SubscriptionPaymentRepository repository;
 
-    public List<SubscriptionPayment> All(){
-        return (List<SubscriptionPayment>) repository.findAll();
+    public List<SubscriptionPaymentModel> All(){
+        return (List<SubscriptionPaymentModel>) repository.findAll();
     }
 
-    public Optional<SubscriptionPayment> Find(int id) {
+    public Optional<SubscriptionPaymentModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(SubscriptionPayment model) {
+    public boolean Update(SubscriptionPaymentModel model) {
         return Add(model);
     }
 
-    public boolean Add(SubscriptionPayment model) {
+    public boolean Add(SubscriptionPaymentModel model) {
         try {
             repository.save(model);
             return true;
@@ -37,7 +36,7 @@ public class SubscriptionPaymentService {
         }
     }
 
-    public boolean Delete(SubscriptionPayment model) {
+    public boolean Delete(SubscriptionPaymentModel model) {
         try {
             repository.delete(model);
             return true;

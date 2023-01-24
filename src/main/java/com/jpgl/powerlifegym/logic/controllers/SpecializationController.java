@@ -1,8 +1,9 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
 import com.jpgl.powerlifegym.logic.services.SpecializationService;
-import com.jpgl.powerlifegym.database.models.Specialization;
+import com.jpgl.powerlifegym.database.models.SpecializationModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +17,27 @@ public class SpecializationController {
     SpecializationService service;
 
     @GetMapping("/specializations")
-    public List<Specialization> index() {
+    public List<SpecializationModel> index() {
         return service.All();
     }
 
     @GetMapping("/specialization/{id}")
-    public Optional<Specialization> show(@PathVariable int id) {
+    public Optional<SpecializationModel> show(@PathVariable int id) {
         return service.Find(id);
     }
 
     @PutMapping("/specialization/{model}")
-    public boolean create(@PathVariable Specialization model) {
+    public ResponseEntity<?> update(@PathVariable SpecializationModel model) {
+        return service.Add(model);
+    }
+
+    @PostMapping ("/specialization")
+    public ResponseEntity<?> create(@RequestBody SpecializationModel model) {
         return service.Add(model);
     }
 
     @DeleteMapping("/specialization/{model}")
-    public boolean destroy(@PathVariable Specialization model) {
+    public boolean destroy(@PathVariable SpecializationModel model) {
         return service.Delete(model);
     }
 

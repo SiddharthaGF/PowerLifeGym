@@ -1,7 +1,7 @@
 package com.jpgl.powerlifegym.logic.services;
 
 import com.jpgl.powerlifegym.database.repositories.PromotionRepository;
-import com.jpgl.powerlifegym.database.models.Promotion;
+import com.jpgl.powerlifegym.database.models.PromotionModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +14,19 @@ public class PromotionService {
     @Autowired
     PromotionRepository repository;
 
-    public List<Promotion> All(){
-        return (List<Promotion>) repository.findAll();
+    public List<PromotionModel> All(){
+        return (List<PromotionModel>) repository.findAll();
     }
 
-    public Optional<Promotion> Find(int id) {
+    public Optional<PromotionModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(Promotion model) {
+    public boolean Update(PromotionModel model) {
         return Add(model);
     }
 
-    public boolean Add(Promotion model) {
+    public boolean Add(PromotionModel model) {
         try {
             repository.save(model);
             return true;
@@ -35,7 +35,7 @@ public class PromotionService {
         }
     }
 
-    public boolean Delete(Promotion model) {
+    public boolean Delete(PromotionModel model) {
         try {
             repository.delete(model);
             return true;

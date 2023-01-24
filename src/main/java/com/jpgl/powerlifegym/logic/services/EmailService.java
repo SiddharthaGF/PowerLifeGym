@@ -1,8 +1,10 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.Email;
+import com.jpgl.powerlifegym.database.models.EmailModel;
 import com.jpgl.powerlifegym.database.repositories.EmailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,28 +16,27 @@ public class EmailService {
     @Autowired
     EmailRepository repository;
 
-    public List<Email> All(){
-        return (List<Email>) repository.findAll();
+    public List<EmailModel> All(){
+        return (List<EmailModel>) repository.findAll();
     }
 
-    public Optional<Email> Find(int id) {
+    public Optional<EmailModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(Email model) {
+    public ResponseEntity<?> Update(EmailModel model) {
         return Add(model);
     }
 
-    public boolean Add(Email model) {
+    public ResponseEntity<?> Add(EmailModel model) {
         try {
-            repository.save(model);
-            return true;
+            return new ResponseEntity<>(repository.save(model), HttpStatus.OK);
         } catch (Exception ex) {
-            return false;
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public boolean Delete(Email model) {
+    public boolean Delete(EmailModel model) {
         try {
             repository.delete(model);
             return true;

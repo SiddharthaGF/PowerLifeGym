@@ -1,8 +1,10 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.Instructor;
+import com.jpgl.powerlifegym.database.models.InstructorModel;
 import com.jpgl.powerlifegym.database.repositories.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,28 +16,27 @@ public class InstructorService {
     @Autowired
     InstructorRepository repository;
 
-    public List<Instructor> All(){
-        return (List<Instructor>) repository.findAll();
+    public List<InstructorModel> All(){
+        return (List<InstructorModel>) repository.findAll();
     }
 
-    public Optional<Instructor> Find(int id) {
+    public Optional<InstructorModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(Instructor model) {
+    public ResponseEntity<?> Update(InstructorModel model) {
         return Add(model);
     }
 
-    public boolean Add(Instructor model) {
+    public ResponseEntity<?> Add(InstructorModel model) {
         try {
-            repository.save(model);
-            return true;
+            return new ResponseEntity<>(repository.save(model), HttpStatus.OK);
         } catch (Exception ex) {
-            return false;
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public boolean Delete(Instructor model) {
+    public boolean Delete(InstructorModel model) {
         try {
             repository.delete(model);
             return true;

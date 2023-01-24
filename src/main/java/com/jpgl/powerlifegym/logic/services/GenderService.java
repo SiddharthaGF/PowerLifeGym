@@ -1,8 +1,11 @@
 package com.jpgl.powerlifegym.logic.services;
 
+import com.jpgl.powerlifegym.database.models.ClientModel;
 import com.jpgl.powerlifegym.database.repositories.GenderRepository;
-import com.jpgl.powerlifegym.database.models.Gender;
+import com.jpgl.powerlifegym.database.models.GenderModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,28 +17,43 @@ public class GenderService {
     @Autowired
     GenderRepository repository;
 
-    public List<Gender> All(){
-        return (List<Gender>) repository.findAll();
+    public GenderModel Formatter(GenderModel gender) {
+        gender.setName(gender.getName().trim().toUpperCase());
+        gender.setDescription(gender.getDescription().trim().toUpperCase());
+        if (gender.getDescription().isEmpty()) {
+            gender.setDescription(null);
+        }
+        return gender;
     }
 
-    public Optional<Gender> Find(int id) {
+    public void Validate(GenderModel gender) throws Exception {
+        if (gender.getName().isEmpty() || gender.getName()==null)
+            throw new Exception("El campo nombre.genero no puede ser nulo/vacío");
+    }
+
+    public List<GenderModel> All(){
+        return (List<GenderModel>) repository.findAll();
+    }
+
+    public Optional<GenderModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(Gender m) {
+    public ResponseEntity<?> Update(GenderModel m) {
         return Add(m);
     }
 
-    public boolean Add(Gender model) {
+    public ResponseEntity<?> Add(GenderModel model) {
         try {
-            repository.save(model);
-            return true;
+            model = Formatter(model);
+            Validate(model);
+            return new ResponseEntity<>(repository.save(model), HttpStatus.OK);
         } catch (Exception ex) {
-            return false;
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public boolean Delete(Gender m) {
+    public boolean Delete(GenderModel m) {
         try {
             repository.delete(m);
             return true;
@@ -44,4 +62,13 @@ public class GenderService {
         }
     }
 
+    public boolean existsByIdOrName(String idOrName) {
+        int id = 0;
+        try {
+            id = Integer.parseInt(idOrName);
+        } catch (Exception ex) {
+            //
+        }
+        return repository.existsByIdOrName(id, idOrName);
+    }
 }

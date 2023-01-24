@@ -1,8 +1,10 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.Specialization;
+import com.jpgl.powerlifegym.database.models.SpecializationModel;
 import com.jpgl.powerlifegym.database.repositories.SpecializationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,28 +16,27 @@ public class SpecializationService {
     @Autowired
     SpecializationRepository repository;
 
-    public List<Specialization> All(){
-        return (List<Specialization>) repository.findAll();
+    public List<SpecializationModel> All(){
+        return (List<SpecializationModel>) repository.findAll();
     }
 
-    public Optional<Specialization> Find(int id) {
+    public Optional<SpecializationModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(Specialization model) {
+    public ResponseEntity<?> Update(SpecializationModel model) {
         return Add(model);
     }
 
-    public boolean Add(Specialization model) {
+    public ResponseEntity<?> Add(SpecializationModel model) {
         try {
-            repository.save(model);
-            return true;
+            return new ResponseEntity<>(repository.save(model), HttpStatus.OK);
         } catch (Exception ex) {
-            return false;
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public boolean Delete(Specialization model) {
+    public boolean Delete(SpecializationModel model) {
         try {
             repository.delete(model);
             return true;

@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.Subscription;
+import com.jpgl.powerlifegym.database.models.SubscriptionModel;
 import com.jpgl.powerlifegym.logic.services.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +16,22 @@ public class SubscriptionController {
     SubscriptionService service;
 
     @GetMapping("/subscriptions")
-    public List<Subscription> index() {
+    public List<SubscriptionModel> index() {
         return service.All();
     }
 
     @GetMapping("/subscription/{id}")
-    public Optional<Subscription> show(@PathVariable int id) {
+    public Optional<SubscriptionModel> show(@PathVariable int id) {
         return service.Find(id);
     }
 
     @PutMapping("/subscription/{model}")
-    public boolean create(@PathVariable Subscription model) {
+    public boolean create(@PathVariable SubscriptionModel model) {
         return service.Add(model);
     }
 
     @DeleteMapping("/subscription/{model}")
-    public boolean destroy(@PathVariable Subscription model) {
+    public boolean destroy(@PathVariable SubscriptionModel model) {
         return service.Delete(model);
     }
 

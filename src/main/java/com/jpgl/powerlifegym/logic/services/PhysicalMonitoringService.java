@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.PhysicalMonitoring;
+import com.jpgl.powerlifegym.database.models.PhysicalMonitoringModel;
 import com.jpgl.powerlifegym.database.repositories.PhysicalMonitoringRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,19 +14,19 @@ public class PhysicalMonitoringService {
     @Autowired
     PhysicalMonitoringRepository repository;
 
-    public List<PhysicalMonitoring> All(){
-        return (List<PhysicalMonitoring>) repository.findAll();
+    public List<PhysicalMonitoringModel> All(){
+        return (List<PhysicalMonitoringModel>) repository.findAll();
     }
 
-    public Optional<PhysicalMonitoring> Find(int id) {
+    public Optional<PhysicalMonitoringModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(PhysicalMonitoring model) {
+    public boolean Update(PhysicalMonitoringModel model) {
         return Add(model);
     }
 
-    public boolean Add(PhysicalMonitoring model) {
+    public boolean Add(PhysicalMonitoringModel model) {
         try {
             repository.save(model);
             return true;
@@ -35,7 +35,7 @@ public class PhysicalMonitoringService {
         }
     }
 
-    public boolean Delete(PhysicalMonitoring model) {
+    public boolean Delete(PhysicalMonitoringModel model) {
         try {
             repository.delete(model);
             return true;

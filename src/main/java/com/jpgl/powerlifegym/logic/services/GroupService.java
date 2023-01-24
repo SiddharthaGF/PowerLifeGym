@@ -1,8 +1,10 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.Group;
+import com.jpgl.powerlifegym.database.models.GroupModel;
 import com.jpgl.powerlifegym.database.repositories.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,28 +16,27 @@ public class GroupService {
     @Autowired
     GroupRepository repository;
 
-    public List<Group> All(){
-        return (List<Group>) repository.findAll();
+    public List<GroupModel> All(){
+        return (List<GroupModel>) repository.findAll();
     }
 
-    public Optional<Group> Find(int id) {
+    public Optional<GroupModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(Group model) {
+    public ResponseEntity<?> Update(GroupModel model) {
         return Add(model);
     }
 
-    public boolean Add(Group model) {
+    public ResponseEntity<?> Add(GroupModel model) {
         try {
-            repository.save(model);
-            return true;
+            return new ResponseEntity<>(repository.save(model), HttpStatus.OK);
         } catch (Exception ex) {
-            return false;
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public boolean Delete(Group model) {
+    public boolean Delete(GroupModel model) {
         try {
             repository.delete(model);
             return true;

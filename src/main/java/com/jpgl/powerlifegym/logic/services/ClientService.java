@@ -1,10 +1,11 @@
 package com.jpgl.powerlifegym.logic.services;
 
 import com.jpgl.powerlifegym.database.repositories.ClientRepository;
-import com.jpgl.powerlifegym.database.models.Client;
+import com.jpgl.powerlifegym.database.models.ClientModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,11 +17,11 @@ public class ClientService {
     @Autowired
     ClientRepository repository;
 
-    public List<Client> All(){
-        return (List<Client>) repository.findAll();
+    public List<ClientModel> All(){
+        return (List<ClientModel>) repository.findAll();
     }
 
-    public Optional<Client> Find(String idOrDni) {
+    public Optional<ClientModel> Find(String idOrDni) {
         int id = 0;
         try {
             id = Integer.parseInt(idOrDni);
@@ -30,7 +31,7 @@ public class ClientService {
         return Optional.ofNullable(repository.findByIdOrDni(id, idOrDni));
     }
 
-    public List<Client> Find(String dni, String name, String lastname, String gender, String cellphoneNumber, String email, Timestamp birthdate ){
+    public List<ClientModel> Find(String dni, String name, String lastname, String gender, String cellphoneNumber, String email, Timestamp birthdate ){
         if (dni != null) {
             return repository.findByDniContaining(dni);
         } else if (name != null || lastname != null) {
@@ -45,23 +46,22 @@ public class ClientService {
         else if (email != null) {
             return repository.findByEmail(email);
         }
-        return (List<Client>) repository.findAll();
+        return (List<ClientModel>) repository.findAll();
     }
 
-    public boolean Update(Client model) {
+    public ResponseEntity<?> Update(ClientModel model) {
         return Add(model);
     }
 
-    public boolean Add(Client model) {
+    public ResponseEntity<?> Add(ClientModel model) {
         try {
-            repository.save(model);
-            return true;
+            return  new ResponseEntity<>(repository.save(model), HttpStatus.OK);
         } catch (Exception ex) {
-            return false;
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public boolean Delete(Client model) {
+    public boolean Delete(ClientModel model) {
         try {
             repository.delete(model);
             return true;

@@ -1,7 +1,6 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.CellphoneNumber;
-import com.jpgl.powerlifegym.database.models.PaymentMethod;
+import com.jpgl.powerlifegym.database.models.PaymentMethodModel;
 import com.jpgl.powerlifegym.database.repositories.CellphoneNumberRepository;
 import com.jpgl.powerlifegym.database.repositories.PaymentMethodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +15,19 @@ public class PaymentMethodService {
     @Autowired
     PaymentMethodRepository repository;
 
-    public List<PaymentMethod> All(){
-        return (List<PaymentMethod>) repository.findAll();
+    public List<PaymentMethodModel> All(){
+        return (List<PaymentMethodModel>) repository.findAll();
     }
 
-    public Optional<PaymentMethod> Find(int id) {
+    public Optional<PaymentMethodModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(PaymentMethod model) {
+    public boolean Update(PaymentMethodModel model) {
         return Add(model);
     }
 
-    public boolean Add(PaymentMethod model) {
+    public boolean Add(PaymentMethodModel model) {
         try {
             repository.save(model);
             return true;
@@ -37,7 +36,7 @@ public class PaymentMethodService {
         }
     }
 
-    public boolean Delete(PaymentMethod model) {
+    public boolean Delete(PaymentMethodModel model) {
         try {
             repository.delete(model);
             return true;

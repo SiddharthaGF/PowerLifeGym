@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.Presentation;
+import com.jpgl.powerlifegym.database.models.PresentationModel;
 import com.jpgl.powerlifegym.database.repositories.PresentationProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,19 +14,19 @@ public class PresentationProductService {
     @Autowired
     PresentationProductRepository repository;
 
-    public List<Presentation> All(){
-        return (List<Presentation>) repository.findAll();
+    public List<PresentationModel> All(){
+        return (List<PresentationModel>) repository.findAll();
     }
 
-    public Optional<Presentation> Find(int id) {
+    public Optional<PresentationModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(Presentation model) {
+    public boolean Update(PresentationModel model) {
         return Add(model);
     }
 
-    public boolean Add(Presentation model) {
+    public boolean Add(PresentationModel model) {
         try {
             repository.save(model);
             return true;
@@ -35,7 +35,7 @@ public class PresentationProductService {
         }
     }
 
-    public boolean Delete(Presentation model) {
+    public boolean Delete(PresentationModel model) {
         try {
             repository.delete(model);
             return true;

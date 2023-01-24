@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.User;
+import com.jpgl.powerlifegym.database.models.UserModel;
 import com.jpgl.powerlifegym.logic.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class UserController {
     UserService service;
 
     @GetMapping("/users")
-    public List<User> index(
+    public List<UserModel> index(
             @RequestParam(required = false) String nick,
             @RequestParam(required = false) String email)
     {
@@ -27,17 +27,17 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public Optional<User> show(@PathVariable int id) {
+    public Optional<UserModel> show(@PathVariable int id) {
         return service.Find(id);
     }
 
-    @PutMapping("/user/{model}")
-    public boolean create(@PathVariable User model) {
+    @PostMapping("/user")
+    public boolean create(@RequestBody UserModel model) {
         return service.Add(model);
     }
 
     @DeleteMapping("/user/{model}")
-    public boolean destroy(@PathVariable User model) {
+    public boolean destroy(@PathVariable UserModel model) {
         return service.Delete(model);
     }
 

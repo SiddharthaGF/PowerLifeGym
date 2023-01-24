@@ -1,8 +1,9 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.Instructor;
+import com.jpgl.powerlifegym.database.models.InstructorModel;
 import com.jpgl.powerlifegym.logic.services.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +17,22 @@ public class InstructorController {
     InstructorService service;
 
     @GetMapping("/instructors")
-    public List<Instructor> index() {
+    public List<InstructorModel> index() {
         return service.All();
     }
 
     @GetMapping("/instructor/{id}")
-    public Optional<Instructor> show(@PathVariable int id) {
+    public Optional<InstructorModel> show(@PathVariable int id) {
         return service.Find(id);
     }
 
-    @PutMapping("/instructor/{model}")
-    public boolean create(@PathVariable Instructor model) {
+    @PostMapping("/instructor")
+    public ResponseEntity<?> create(@RequestBody InstructorModel model) {
         return service.Add(model);
     }
 
     @DeleteMapping("/instructor/{model}")
-    public boolean destroy(@PathVariable Instructor model) {
+    public boolean destroy(@PathVariable InstructorModel model) {
         return service.Delete(model);
     }
 

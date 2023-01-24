@@ -1,8 +1,9 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.Group;
+import com.jpgl.powerlifegym.database.models.GroupModel;
 import com.jpgl.powerlifegym.logic.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +17,23 @@ public class GroupController {
     GroupService service;
 
     @GetMapping("/groups")
-    public List<Group> index() {
+    public List<GroupModel> index() {
         return service.All();
     }
 
     @GetMapping("/group/{id}")
-    public Optional<Group> show(@PathVariable int id) {
+    public Optional<GroupModel> show(@PathVariable int id) {
         return service.Find(id);
     }
 
-    @PutMapping("/group/{model}")
-    public boolean create(@PathVariable Group model) {
+    @PostMapping("/group")
+    public ResponseEntity<?> create(@RequestBody GroupModel model) {
+        System.out.println(model.getIdInstructor());
         return service.Add(model);
     }
 
     @DeleteMapping("/group/{model}")
-    public boolean destroy(@PathVariable Group model) {
+    public boolean destroy(@PathVariable GroupModel model) {
         return service.Delete(model);
     }
 

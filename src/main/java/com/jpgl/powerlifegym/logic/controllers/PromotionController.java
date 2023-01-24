@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.Promotion;
+import com.jpgl.powerlifegym.database.models.PromotionModel;
 import com.jpgl.powerlifegym.logic.services.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +16,22 @@ public class PromotionController {
     PromotionService service;
 
     @GetMapping("/promotions")
-    public List<Promotion> index() {
+    public List<PromotionModel> index() {
         return service.All();
     }
 
     @GetMapping("/promotion/{id}")
-    public Optional<Promotion> show(@PathVariable int id) {
+    public Optional<PromotionModel> show(@PathVariable int id) {
         return service.Find(id);
     }
 
     @PutMapping("/promotion/{model}")
-    public boolean create(@PathVariable Promotion model) {
+    public boolean create(@PathVariable PromotionModel model) {
         return service.Add(model);
     }
 
     @DeleteMapping("/promotion/{model}")
-    public boolean destroy(@PathVariable Promotion model) {
+    public boolean destroy(@PathVariable PromotionModel model) {
         return service.Delete(model);
     }
 

@@ -1,8 +1,9 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.CellphoneNumber;
+import com.jpgl.powerlifegym.database.models.CellphoneNumberModel;
 import com.jpgl.powerlifegym.logic.services.CellphoneNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +17,27 @@ public class CellphoneNumberController {
     CellphoneNumberService service;
 
     @GetMapping("/cellphoneNumbers")
-    public List<CellphoneNumber> index() {
+    public List<CellphoneNumberModel> index() {
         return service.All();
     }
 
-    @GetMapping("/cellphoneNumber/{id}")
-    public Optional<CellphoneNumber> show(@PathVariable int id) {
-        return service.Find(id);
+    @GetMapping("/cellphoneNumber/{idOrNumber}")
+    public Optional<CellphoneNumberModel> findByIdOrNumber(@PathVariable String idOrNumber) {
+        return service.findByIdOrNumber(idOrNumber);
     }
 
-    @PutMapping("/cellphoneNumber/{cellphoneNumber}")
-    public boolean create(@PathVariable CellphoneNumber cellphoneNumber) {
+    @GetMapping("/cellphoneNumber/exists/{idOrNumber}")
+    public boolean existsByIdOrNumber(@PathVariable String idOrNumber) {
+        return service.existsByIdOrNumber(idOrNumber);
+    }
+
+    @PostMapping("/cellphoneNumber")
+    public ResponseEntity<?> create(@RequestBody CellphoneNumberModel cellphoneNumber) {
         return service.Add(cellphoneNumber);
     }
 
     @DeleteMapping("/cellphoneNumber/{cellphoneNumber}")
-    public boolean destroy(@PathVariable CellphoneNumber cellphoneNumber) {
+    public boolean destroy(@PathVariable CellphoneNumberModel cellphoneNumber) {
         return service.Delete(cellphoneNumber);
     }
 
