@@ -1,7 +1,7 @@
 package com.jpgl.powerlifegym.logic.services;
 
 import com.jpgl.powerlifegym.database.repositories.PromotionRepository;
-import com.jpgl.powerlifegym.database.models.PromotionModel;
+import com.jpgl.powerlifegym.database.models.promotion.PromotionModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.InscriptionModel;
+import com.jpgl.powerlifegym.database.models.offer.services.InscriptionModel;
 import com.jpgl.powerlifegym.database.repositories.InscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

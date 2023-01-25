@@ -1,11 +1,12 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.SpecializationModel;
+import com.jpgl.powerlifegym.database.models.person.employee.SpecializationModel;
 import com.jpgl.powerlifegym.database.repositories.SpecializationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class SpecializationService {
         return Add(model);
     }
 
+    @Transactional
     public ResponseEntity<?> Add(SpecializationModel model) {
         try {
             return new ResponseEntity<>(repository.save(model), HttpStatus.OK);

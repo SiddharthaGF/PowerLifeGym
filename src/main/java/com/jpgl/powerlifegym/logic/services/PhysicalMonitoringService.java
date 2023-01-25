@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.PhysicalMonitoringModel;
+import com.jpgl.powerlifegym.database.models.offer.services.PhysicalMonitoringModel;
 import com.jpgl.powerlifegym.database.repositories.PhysicalMonitoringRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

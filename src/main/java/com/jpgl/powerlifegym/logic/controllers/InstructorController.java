@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.InstructorModel;
+import com.jpgl.powerlifegym.database.models.person.employee.InstructorModel;
 import com.jpgl.powerlifegym.logic.services.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

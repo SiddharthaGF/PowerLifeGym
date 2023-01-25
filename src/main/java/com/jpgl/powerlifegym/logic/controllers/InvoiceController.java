@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.InvoiceModel;
+import com.jpgl.powerlifegym.database.models.invoice.InvoiceModel;
 import com.jpgl.powerlifegym.logic.services.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

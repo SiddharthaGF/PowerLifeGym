@@ -1,7 +1,7 @@
 package com.jpgl.powerlifegym.logic.services;
 
 import com.jpgl.powerlifegym.database.repositories.ClientRepository;
-import com.jpgl.powerlifegym.database.models.ClientModel;
+import com.jpgl.powerlifegym.database.models.person.ClientModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

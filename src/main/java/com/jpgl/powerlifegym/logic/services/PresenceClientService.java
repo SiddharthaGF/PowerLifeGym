@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.services;
 
-import com.jpgl.powerlifegym.database.models.PresenceClientsModel;
+import com.jpgl.powerlifegym.database.models.offer.services.PresenceClientsModel;
 import com.jpgl.powerlifegym.database.repositories.CustomerAssistanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

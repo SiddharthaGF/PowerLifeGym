@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.logic.controllers;
 
-import com.jpgl.powerlifegym.database.models.GroupModel;
+import com.jpgl.powerlifegym.database.models.person.GroupModel;
 import com.jpgl.powerlifegym.logic.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
