@@ -10,13 +10,14 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1")
+@CrossOrigin(origins = "*")
+@RequestMapping("api/v1/client")
 public class ClientController {
 
     @Autowired
     ClientService service;
 
-    @GetMapping("/clients")
+    @GetMapping
     public Object index(
             @RequestParam(required = false) String dni,
             @RequestParam(required = false) String name,
@@ -29,25 +30,25 @@ public class ClientController {
         return service.Find(dni, name, lastname, gender, cellphoneNumber, email, birthdate);
     }
 
-    @GetMapping("/client/{idOrDni}")
+    @GetMapping("/{idOrDni}")
     public Optional<ClientModel> show(@PathVariable String idOrDni) {
         return service.Find(idOrDni);
     }
 
-    @GetMapping("/client/exists/{idOrDni}")
+    @GetMapping("/exists/{idOrDni}")
     public boolean exists(@PathVariable String idOrDni) { return service.Exists(idOrDni); }
 
-    @PostMapping ("/client")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody ClientModel model) {
         return service.Add(model);
     }
 
-    @PutMapping("/client/{client}")
-    public ResponseEntity<?> update(@PathVariable ClientModel client) {
-        return service.Add(client);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@RequestBody ClientModel model, @PathVariable int id) {
+        return service.Update(model, id);
     }
 
-    @DeleteMapping("/client/{client}")
+    @DeleteMapping("/{client}")
     public boolean destroy(@PathVariable ClientModel client) {
         return service.Delete(client);
     }

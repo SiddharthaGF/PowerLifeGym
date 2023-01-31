@@ -13,7 +13,7 @@ public class EmailValidator {
     }
 
     public static boolean ExistsEmail(@NotNull String email) {
-        return true;
+        return false;
     }
 
 }

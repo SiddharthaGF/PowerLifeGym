@@ -52,8 +52,18 @@ public class PersonValidator extends StringValidator {
     }
 
     public static boolean NameOrLastname(String nameOrLastname) {
-        return nameOrLastname == null || nameOrLastname.isBlank();
+        return !nameOrLastname.isBlank();
     }
 
+    public static boolean Gender(String gender) {
+        return gender.equals("M") || gender.equals("F") || gender.equals("ND");
+    }
 
+    public static boolean Email(String email) {
+        return EmailValidator.Email(email) && !EmailValidator.ExistsEmail(email);
+    }
+
+    public static boolean CellPhoneNumber(String cellPhoneNumber) {
+        return CellPhoneNumberValidator.Number(cellPhoneNumber) && !CellPhoneNumberValidator.Exists(cellPhoneNumber);
+    }
 }

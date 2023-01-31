@@ -11,13 +11,7 @@ public class CellPhoneNumberValidator {
     }
 
     public static boolean Exists(@NotNull String number) {
-        String url = "http://localhost:8080/api/v1/cellphoneNumber/exists/" + number;
-        Boolean response = PersonValidator.restTemplate.getForObject(url, Boolean.class);
-        return Boolean.TRUE.equals(response);
-    }
-
-    public static boolean Exists(int number) {
-        String url = "http://localhost:8080/api/v1/cellphoneNumber/exists/" + number;
+        String url = "http://localhost:8080/api/v1/user/exists/cellPhoneNumber/" + number;
         Boolean response = PersonValidator.restTemplate.getForObject(url, Boolean.class);
         return Boolean.TRUE.equals(response);
     }

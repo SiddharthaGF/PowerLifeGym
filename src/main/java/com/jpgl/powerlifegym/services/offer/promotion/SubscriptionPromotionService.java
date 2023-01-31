@@ -1,6 +1,6 @@
 package com.jpgl.powerlifegym.services.offer.promotion;
 
-import com.jpgl.powerlifegym.controllers.offer.promotion.SubscriptionPromotionController;
+import com.jpgl.powerlifegym.models.offer.promotion.SubscriptionPromotionModel;
 import com.jpgl.powerlifegym.repositories.offer.promotion.SubscriptionPromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,19 +14,19 @@ public class SubscriptionPromotionService {
     @Autowired
     SubscriptionPromotionRepository repository;
 
-    public List<SubscriptionPromotionController> All(){
-        return (List<SubscriptionPromotionController>) repository.findAll();
+    public List<SubscriptionPromotionModel> All(){
+        return (List<SubscriptionPromotionModel>) repository.findAll();
     }
 
-    public Optional<SubscriptionPromotionController> Find(int id) {
+    public Optional<SubscriptionPromotionModel> Find(int id) {
         return repository.findById(id);
     }
 
-    public boolean Update(SubscriptionPromotionController model) {
+    public boolean Update(SubscriptionPromotionModel model) {
         return Add(model);
     }
 
-    public boolean Add(SubscriptionPromotionController model) {
+    public boolean Add(SubscriptionPromotionModel model) {
         try {
             repository.save(model);
             return true;
@@ -35,7 +35,7 @@ public class SubscriptionPromotionService {
         }
     }
 
-    public boolean Delete(SubscriptionPromotionController model) {
+    public boolean Delete(SubscriptionPromotionModel model) {
         try {
             repository.delete(model);
             return true;
