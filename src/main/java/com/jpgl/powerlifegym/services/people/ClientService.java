@@ -93,9 +93,10 @@ public class ClientService {
         }
     }
 
-    public boolean Delete(ClientModel model) {
+    public boolean Delete(int id) {
         try {
-            repository.delete(model);
+            Optional<ClientModel> model = Find(String.valueOf(id));
+            repository.delete(model.get());
             return true;
         } catch (Exception ex) {
             return false;

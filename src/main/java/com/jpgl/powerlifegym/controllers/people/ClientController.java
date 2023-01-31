@@ -48,9 +48,9 @@ public class ClientController {
         return service.Update(model, id);
     }
 
-    @DeleteMapping("/{client}")
-    public boolean destroy(@PathVariable ClientModel client) {
-        return service.Delete(client);
+    @DeleteMapping("/{id}")
+    public boolean destroy(@PathVariable int id) {
+        return service.Delete(id);
     }
 
 }
