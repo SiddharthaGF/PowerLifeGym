@@ -25,7 +25,8 @@ public class SpecializationService {
         return repository.findById(id);
     }
 
-    public ResponseEntity<?> Update(SpecializationModel model) {
+    public ResponseEntity<?> Update(SpecializationModel model, int id) {
+        model.setId(id);
         return Add(model);
     }
 

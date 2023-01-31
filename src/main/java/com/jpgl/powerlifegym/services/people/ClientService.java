@@ -1,5 +1,6 @@
 package com.jpgl.powerlifegym.services.people;
 
+import com.google.common.hash.Hashing;
 import com.jpgl.powerlifegym.models.people.ClientModel;
 import com.jpgl.powerlifegym.repositories.people.ClientRepository;
 import com.jpgl.powerlifegym.validation.PersonValidator;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -25,13 +27,21 @@ public class ClientService {
         model.setName(PersonValidator.cleanString(model.getName()));
         model.setLastname(PersonValidator.cleanString(model.getLastname()));
         model.setCellPhoneNumber(PersonValidator.cleanString(model.getCellPhoneNumber()));
+        model.setPassword(Hashing.sha256()
+                .hashString(model.getPassword(), StandardCharsets.UTF_8)
+                .toString());
         return model;
     }
 
     private void ValidateClient(ClientModel model) throws Exception {
-        model = FormatterData(model);
-        if (!PersonValidator.Dni((model.getDni())))
-            throw new Exception("Número de cédula no invalido client");
+        if (model.getId() == 0) {
+            if (!PersonValidator.Dni((model.getDni())))
+                throw new Exception("Número de cédula no invalido client");
+            if (!PersonValidator.Email(model.getEmail()))
+                throw new Exception("Email no valido o ya existe");
+            if (!PersonValidator.CellPhoneNumber(model.getCellPhoneNumber()))
+                throw new Exception("Numero de telefono no valido o ya existe");
+        }
         if (!PersonValidator.NameOrLastname((model.getName())))
             throw new Exception("Nombre no invalido client");
         if (!PersonValidator.NameOrLastname((model.getLastname())))
@@ -40,11 +50,6 @@ public class ClientService {
             throw new Exception("Fecha de nacimiento no valida");
         if (!PersonValidator.Gender(model.getGender()))
             throw new Exception("Género no valido");
-        if (!PersonValidator.Email(model.getEmail()))
-            throw new Exception("Email no valido o ya existe");
-        if (!PersonValidator.CellPhoneNumber(model.getCellPhoneNumber()))
-            throw new Exception("Numero de telefono no valido o ya existe");
-
     }
 
     public List<ClientModel> All(){
@@ -86,6 +91,7 @@ public class ClientService {
 
     public ResponseEntity<?> Add(ClientModel model) {
         try {
+            model = FormatterData(model);
             //ValidateClient(model);
             return  new ResponseEntity<>(repository.save(model), HttpStatus.OK);
         } catch (Exception ex) {

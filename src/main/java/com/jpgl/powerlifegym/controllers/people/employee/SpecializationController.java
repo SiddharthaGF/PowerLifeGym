@@ -26,9 +26,9 @@ public class SpecializationController {
         return service.Find(id);
     }
 
-    @PutMapping("/{model}")
-    public ResponseEntity<?> update(@PathVariable SpecializationModel model) {
-        return service.Add(model);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@RequestBody SpecializationModel model, @PathVariable int id) {
+        return service.Update(model, id);
     }
 
     @PostMapping

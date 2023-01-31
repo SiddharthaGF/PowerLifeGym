@@ -7,7 +7,7 @@ import { endPoint } from './Config';
 
 const resource = '/client'
 
-const Clientes = () => {
+const Instructores = () => {
     let url = endPoint + resource;
     const [clients, setClients] = useState([]);
     const [id, setId] = useState('');
@@ -19,15 +19,20 @@ const Clientes = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [cellPhoneNumber, setCellPhoneNumber] = useState('');
+    const [especializacion, setEspecializacion] = useState('');
     const [operation, setOperation] = useState('');
     const [title, setTitle] = useState('');
 
-    const options = [
-        {value: '', text: '--Escoja una opción--'},
-        {value: 'F', text: 'Femenino'},
-        {value: 'M', text: 'Masculino'},
-        {value: 'NB', text: 'No Binario'},
-    ];
+    const getEspecializaciones = async () => {
+        const respuesta = await axios.get(endPoint + "/specialization").then(respuesta => {
+            for(let i of respuesta.data){
+               options.push({value: i.id, text: i.name})
+            }
+            console.log(options);
+        });
+    }
+
+    const options = [];
 
     const handleChange = event => {
         setGender(event.target.value);
@@ -38,6 +43,7 @@ const Clientes = () => {
     }, []);
 
     const getClients = async () => {
+        await getEspecializaciones();
         const respuesta = await axios.get(url).then(respuesta => {
             setClients(respuesta.data);
         });
@@ -98,7 +104,6 @@ const Clientes = () => {
                 };
                 metodo = 'post';
                 url = endPoint + resource
-                console.log(url)
 
             } else {
                 parametros = {
@@ -245,9 +250,9 @@ const Clientes = () => {
                             <div className='input-group mb-3'>
                                 <span className='input-group-text'><i className='fa-solid fa-person'></i></span>
                                 <select value={gender} onChange={handleChange}>
-                                    {options.map(option => (
-                                        <option key={option.value} value={option.value}>
-                                            {option.text}
+                                    {options.map(options => (
+                                        <option key={options.value} value={options.value}>
+                                            {options.text}
                                         </option>
                                     ))}
                                 </select>
@@ -294,4 +299,4 @@ const Clientes = () => {
     )
 };
 
-export default Clientes;
+export default Instructores;
