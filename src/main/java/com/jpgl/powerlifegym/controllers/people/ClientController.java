@@ -10,7 +10,6 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/client")
 public class ClientController {
 
@@ -43,6 +42,7 @@ public class ClientController {
         return service.Add(model);
     }
 
+    @CrossOrigin
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody ClientModel model, @PathVariable int id) {
         return service.Update(model, id);
