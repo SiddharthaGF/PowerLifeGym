@@ -30,4 +30,4 @@ build/
 !**/src/test/**/build/
 
 ### React ###
-/src/main/java/com/jpgl/powerlifegym/client/
+/src/main/java/com/jpgl/powerlifegym/client/node_modules
